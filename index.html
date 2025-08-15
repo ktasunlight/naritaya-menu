@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成田屋 - メニュー</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        .menu-item { border-bottom: 1px solid #ccc; padding: 15px 0; }
+        .menu-item h2 { font-size: 20px; margin: 0; }
+        .menu-item p { margin: 5px 0 0 0; }
+        .menu-item a { text-decoration: none; color: inherit; display: block; }
+        .menu-title-and-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .photo-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .photo-container img {
+            max-width: 90%;
+            max-height: 90%;
+            margin: auto;
+            display: block;
+        }
+        .photo-container.show { display: flex; }
+        
+        .category {
+            margin-top: 30px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            scroll-margin-top: 80px;
+        }
+        
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .toc-list li a {
+            display: block;
+            padding: 8px 12px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+            white-space: nowrap;
+        }
+        .toc-container {
+            position: sticky;
+            top: 0;
+            background-color: #fff;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>成田屋 メニュー表</h1>
+    
+    <div class="toc-container" id="toc-container">
+        <ul class="toc-list" id="table-of-contents"></ul>
+    </div>
+    <div id="menu-list"></div>
+
+    <div id="photo-overlay" class="photo-container" onclick="this.classList.remove('show');">
+        <img id="enlarged-photo" src="">
+    </div>
+
+    <script>
+        const prices = {
+            '200円': "200円",
+            '220円': "220円",
+            '230円': "230円",
+            '280円': "280円",
+            '340円': "340円",
+            '390円': "390円",
+            '440円': "440円",
+            '490円': "490円",
+            '540円': "540円",
+            '590円': "590円",
+            '640円': "640円",
+            '690円': "690円",
+            '740円': "740円",
+            '800円': "800円",
+        };
+        
+        const menuData = [
+            { category: "成田屋名物", items: [
+                { name: "★鳥酢", price: prices['280円'], image: "とりす.jpg" },
+                { name: "★湯どうふ", price: prices['340円'], image: "ゆどうふ.jpg" }
+            ]},
+            { category: "とりあえず", items: [
+                { name: "枝豆", price: prices['280円'], image: "えだまめ.jpg" },
+                { name: "冷奴", price: prices['280円'], image: "ひややっこ.jpg" },
+                { name: "トマト", price: prices['280円'], image: "とまと.jpg" },
+                { name: "モロキュウ", price: prices['280円'], image: "もろきゅう.jpg" },
+                { name: "うにクラゲ", price: prices['280円'], image: "うにくらげ.jpg" },
+                { name: "納豆", price: prices['280円'], image: "なっとう.jpg" },
+                { name: "チーズ", price: prices['280円'], image: "ちーず.jpg" },
+                { name: "白菜キムチ", price: prices['280円'], image: "はくさいきむち.jpg" },
+                { name: "白菜漬", price: prices['280円'], image: "はくさいづけ.jpg" },
+                { name: "大根浅漬", price: prices['280円'], image: "だいこんあさづけ.jpg" },
+                { name: "ラッキョ漬", price: prices['280円'], image: "らっきょうづけ.jpg" },
+                { name: "とうふ田楽", price: prices['340円'], image: "とうふでんがく.jpg" },
+                { name: "こんにゃく田楽", price: prices['340円'], image: "こんにゃくでんがく.jpg" },
+                { name: "たこワサビ", price: prices['340円'], image: "たこわさ.jpg" },
+                { name: "トロロ", price: prices['340円'], image: "とろろ.jpg" },
+                { name: "長いもスライス", price: prices['340円'], image: "ながいもすらいす.jpg" },
+                { name: "めざし丸干", price: prices['390円'], image: "めざし.jpg" },
+                { name: "とろろ納豆", price: prices['440円'], image: "とろろなっとう.jpg" },
+                { name: "ポテトサラダ", price: prices['440円'], image: "ぽてさら.jpg" },
+                { name: "チャンジャ", price: prices['440円'], image: "ちゃんじゃ.jpg" },
+                { name: "あさり酒蒸し", price: prices['640円'], image: "あさりさかむし.jpg" }
+            ]},
+            { category: "刺身", items: [
+                { name: "刺身盛合せ", price: prices['800円'], image: "さしもり.jpg" },
+                { name: "マグロ山かけ", price: prices['690円'], image: "まぐろやまかけ.jpg" },
+                { name: "地ダコぶつ切", price: prices['690円'], image: "たこぶつ.jpg" },
+                { name: "イカ納豆", price: prices['690円'], image: "いかなっとう.jpg" },
+                { name: "マグロ納豆", price: prices['690円'], image: "まぐろなっとう.jpg" },
+                { name: "ハマチ刺し", price: prices['690円'], image: "はまちさし.jpg" },
+                { name: "イカ刺し", price: prices['690円'], image: "いかさし.jpg" },
+                { name: "アジ刺し", price: prices['690円'], image: "あじさし.jpg" },
+                { name: "アジタタキ", price: prices['690円'], image: "あじたたき.jpg" },
+                { name: "カツオタタキ", price: prices['690円'], image: "かつおたたき.jpg" }
+            ]},
+            { category: "やきとり", items: [
+                { name: "とり身　1本", price: prices['200円'], image: "みくし.jpg" },
+                { name: "とり皮　1本", price: prices['200円'], image: "かわくし.jpg" },
+                { name: "砂ずり　1本", price: prices['200円'], image: "ずりくし.jpg" },
+                { name: "手羽先　1本", price: prices['220円'], image: "てばさき.jpg" },
+                { name: "牛つくね　1本", price: prices['220円'], image: "つくね.jpg" }
+            ]},
+            { category: "煮物", items: [
+                { name: "鳥きも煮", price: prices['280円'], image: "とりきも.jpg" },
+                { name: "あらだき", price: prices['280円'], image: "あらだき.jpg" },
+                { name: "里芋煮", price: prices['340円'], image: "さといもに.jpg" },
+                { name: "なす味噌煮", price: prices['440円'], image: "なすみそ.jpg" },
+                { name: "肉じゃが", price: prices['440円'], image: "にくじゃが.jpg" },
+                { name: "あさり酒蒸し", price: prices['640円'], image: "あさりさかむし.jpg" }
+            ]},
+            { category: "焼物", items: [
+                { name: "ししゃも焼", price: prices['490円'], image: "ししゃもやき.jpg" },
+                { name: "さんま焼", price: prices['640円'], image: "さんまやき.jpg" },
+                { name: "ホッケ焼", price: prices['690円'], image: "ほっけやき.jpg" },
+                { name: "いかゲソ焼", price: prices['390円'], image: "いかげそやき.jpg" },
+                { name: "焼なすび", price: prices['440円'], image: "やきなす.jpg" },
+                { name: "鳥せせり焼", price: prices['440円'], image: "せせりやき.jpg" },
+                { name: "牛ハラミ焼", price: prices['740円'], image: "ぎゅうはらみやき.jpg" },
+                { name: "牛タン焼", price: prices['740円'], image: "たん.jpg" },
+                { name: "だし巻玉子", price: prices['440円'], image: "だしまきたまご.jpg" },
+                { name: "お好み焼き風ネギ焼", price: prices['540円'], image: "ねぎやき.jpg" }
+            ]},
+            { category: "酢の物", items: [
+                { name: "もずく酢", price: prices['280円'], image: "もずくす.jpg" },
+                { name: "もやしゴマ酢", price: prices['280円'], image: "もやしごます.jpg" },
+                { name: "ちりめん大根", price: prices['280円'], image: "ちりめんだいこん.jpg" },
+                { name: "タコ酢", price: prices['440円'], image: "たこす.jpg" },
+                { name: "サバ酢", price: prices['440円'], image: "さばす.jpg" },
+                { name: "もずくとろろ", price: prices['440円'], image: "もずくとろろ.jpg" }
+            ]},
+            { category: "揚げ物", items: [
+                { name: "天ぷら盛合せ", price: prices['800円'], image: "てんもり.jpg" },
+                { name: "海老天", price: prices['690円'], image: "えびてん.jpg" },
+                { name: "穴子天", price: prices['690円'], image: "あなごてん.jpg" },
+                { name: "イワシ天", price: prices['690円'], image: "いわしてん.jpg" },
+                { name: "タコ天", price: prices['690円'], image: "たこてん.jpg" },
+                { name: "イカ天", price: prices['690円'], image: "いかてん.jpg" },
+                { name: "キス天", price: prices['690円'], image: "きすてん.jpg" },
+                { name: "ゲソ天", price: prices['690円'], image: "げそてん.jpg" },
+                { name: "白魚天", price: prices['690円'], image: "しらうおてん.jpg" },
+                { name: "アジフライ", price: prices['690円'], image: "あじふらい.jpg" },
+                { name: "海老マヨ天", price: prices['690円'], image: "えびまよてん.jpg" },
+                { name: "サキイカ天", price: prices['440円'], image: "さきいかてん.jpg" },
+                { name: "れんこん天", price: prices['440円'], image: "れんこんてん.jpg" },
+                { name: "ごぼう天", price: prices['440円'], image: "こぼうてん.jpg" },
+                { name: "ちくわ天", price: prices['440円'], image: "ちくわてん.jpg" },
+                { name: "なすび天", price: prices['440円'], image: "なすびてん.jpg" },
+                { name: "玉ねぎ天", price: prices['440円'], image: "たまねぎてん.jpg" },
+                { name: "舞茸天", price: prices['440円'], image: "まいたけてん.jpg" },
+                { name: "チーズ天", price: prices['440円'], image: "ちーずてん.jpg" },
+                { name: "ギョーザ天", price: prices['440円'], image: "ぎょーざてん.jpg" },
+                { name: "シュウマイ天", price: prices['440円'], image: "しゅうまいてん.jpg" },
+                { name: "にんにく天", price: prices['440円'], image: "にんにくてん.jpg" },
+                { name: "チーズハムカツ", price: prices['440円'], image: "ちーずはむかつ.jpg" },
+                { name: "粗挽ウインナー＆ポテト", price: prices['540円'], image: "ういんなー.jpg" },
+                { name: "豚串カツ　2本", price: prices['690円'], image: "くしかつ.jpg" },
+                { name: "子ダコ唐揚", price: prices['690円'], image: "こだこから.jpg" },
+                { name: "とり唐揚", price: prices['690円'], image: "とりから.jpg" },
+                { name: "手羽先唐揚　2本", price: prices['440円'], image: "てばから.jpg" },
+                { name: "鳥皮パリパリ揚", price: prices['440円'], image: "かわぱり.jpg" },
+                { name: "小エビ唐揚", price: prices['440円'], image: "こえびから.jpg" },
+                { name: "軟骨唐揚", price: prices['440円'], image: "なんこつから.jpg" },
+                { name: "せせり唐揚", price: prices['440円'], image: "せせりから.jpg" },
+                { name: "砂ずり唐揚", price: prices['440円'], image: "すなずりから.jpg" },
+                { name: "ササミフライ", price: prices['440円'], image: "ささみふらい.jpg" },
+                { name: "ポテトフライ", price: prices['390円'], image: "ぽてふら.jpg" },
+                { name: "揚だし豆腐", price: prices['390円'], image: "あげだしどうふ.jpg" },
+                { name: "揚だし餅", price: prices['390円'], image: "あげだしもち.jpg" },
+                { name: "揚だしタコ焼", price: prices['390円'], image: "だしたこ.jpg" },
+                { name: "牛肉コロッケ", price: prices['280円'], image: "ぎゅうころ.jpg" }
+            ]},
+            { category: "炒め物", items: [
+                { name: "ホルモン炒", price: prices['740円'], image: "ほるもんいため.jpg" },
+                { name: "緑アスパラ炒", price: prices['440円'], image: "あすぱらいため.jpg" },
+                { name: "にんにく芽炒", price: prices['440円'], image: "めいため.jpg" },
+                { name: "にら玉子炒", price: prices['440円'], image: "にらたま.jpg" },
+                { name: "法蓮草玉子炒", price: prices['440円'], image: "ほうれんそうたまごいため.jpg" },
+                { name: "えんどう玉子炒", price: prices['440円'], image: "えんどうたまごいため.jpg" }
+            ]},
+            { category: "細巻", items: [
+                { name: "鉄火巻", price: prices['390円'], image: "てっかまき.jpg" },
+                { name: "かっぱ巻", price: prices['390円'], image: "かっぱまき.jpg" },
+                { name: "しんこ巻", price: prices['390円'], image: "しんこまき.jpg" },
+                { name: "しそ巻", price: prices['390円'], image: "しそまき.jpg" },
+                { name: "とりマヨ巻", price: prices['390円'], image: "とりまよまき.jpg" },
+                { name: "えび巻", price: prices['440円'], image: "えびまき.jpg" },
+                { name: "はまち巻", price: prices['440円'], image: "はまちまき.jpg" },
+                { name: "いか巻", price: prices['440円'], image: "いかまき.jpg" },
+                { name: "あなご巻", price: prices['440円'], image: "あなごまき.jpg" },
+                { name: "明太子巻", price: prices['440円'], image: "めんたいこまき.jpg" },
+            ]},
+            { category: "ご飯物", items: [
+                { name: "おにぎり", price: prices['230円'], image: "おにぎり.jpg" },
+                { name: "焼おにぎり", price: prices['230円'], image: "やきおにぎり.jpg" },
+                { name: "ごはん", price: prices['280円'], image: "ごはん.jpg" },
+                { name: "のり茶漬", price: prices['440円'], image: "のりちゃづけ.jpg" },
+                { name: "うめ茶漬", price: prices['440円'], image: "うめちゃづけ.jpg" },
+                { name: "鮭茶漬", price: prices['540円'], image: "さけちゃづけ.jpg" },
+            ]},
+            { category: "汁物", items: [
+                { name: "みそ汁", price: prices['280円'], image: "みそしる.jpg" },
+                { name: "シジミ汁", price: prices['390円'], image: "しじみじる.jpg" },
+            ]}
+        ];
+
+        function generateMenu() {
+            const menuList = document.getElementById('menu-list');
+            const tocList = document.getElementById('table-of-contents');
+
+            menuData.forEach((category, index) => {
+                const categoryTitle = document.createElement('h2');
+                const categoryId = `category-${index}`;
+                categoryTitle.id = categoryId;
+                categoryTitle.className = 'category';
+                categoryTitle.textContent = category.category;
+                menuList.appendChild(categoryTitle);
+
+                const tocItem = document.createElement('li');
+                tocItem.innerHTML = `<a href="#${categoryId}">${category.category}</a>`;
+                tocList.appendChild(tocItem);
+
+                category.items.forEach(item => {
+                    const menuItem = document.createElement('div');
+                    menuItem.className = 'menu-item';
+                    menuItem.innerHTML = `
+                        <a href="#" onclick="showPhoto(this); return false;" data-src="${item.image}">
+                            <div class="menu-title-and-price">
+                                <h2>${item.name}</h2>
+                                <p>${item.price}</p>
+                            </div>
+                        </a>
+                    `;
+                    menuList.appendChild(menuItem);
+                });
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generateMenu();
+            const tocContainer = document.getElementById('toc-container');
+            const tocHeight = tocContainer.offsetHeight;
+            const categories = document.querySelectorAll('.category');
+            categories.forEach(category => {
+                category.style.scrollMarginTop = `${tocHeight + 10}px`;
+            });
+        });
+
+        function showPhoto(element) {
+            const photoSrc = element.getAttribute('data-src');
+            const photoOverlay = document.getElementById('photo-overlay');
+            const enlargedPhoto = document.getElementById('enlarged-photo');
+            const tocContainer = document.getElementById('toc-container');
+            const tocHeight = tocContainer.offsetHeight;
+
+            photoOverlay.style.top = `${tocHeight}px`;
+
+            const viewportHeight = window.innerHeight;
+            const overlayHeight = viewportHeight - tocHeight;
+            photoOverlay.style.height = `${overlayHeight}px`;
+
+            enlargedPhoto.src = photoSrc;
+            photoOverlay.classList.add('show');
+        }
+    </script>
+</body>
+</html>
