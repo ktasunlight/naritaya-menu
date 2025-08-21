@@ -10,7 +10,7 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
         .tax-note {
             font-size: 17px;
@@ -26,14 +26,17 @@
         .menu-item h2 { font-size: 20px; margin: 0; }
         .menu-item p { margin: 5px 0 0 0; }
         .menu-item a { text-decoration: none; color: inherit; display: block; }
-        .menu-title-and-price { display: flex; justify-content: space-between; align-items: center;}
-        
+        .menu-title-and-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
         .photo-container {
             position: fixed;
-            top: 0;
+            top: 55px;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: calc(100% - 55px);
             background-color: rgba(0,0,0,0.8);
             display: none;
             justify-content: center;
@@ -47,14 +50,14 @@
             display: block;
         }
         .photo-container.show { display: flex; }
-        
+
         .category {
             margin-top: 30px;
             border-bottom: 2px solid #333;
             padding-bottom: 5px;
-            scroll-margin-top: 80px;
+            scroll-margin-top: 55px;
         }
-        
+
         .toc-list {
             list-style: none;
             padding: 0;
@@ -79,8 +82,10 @@
             top: 0;
             background-color: #fff;
             padding-top: 10px;
-            padding-bottom: 10px;
+            padding-bottom: 27px;
             z-index: 10;
+            width: 100vw;
+            margin-left: -20px;
         }
     </style>
 </head>
@@ -91,7 +96,7 @@
         <span class="tax-note">※税込価格</span>
     </h1>
     <p class="instruction">メニューの文字をタッチすると画像が表示されます</p>
-    
+
     <div class="toc-container" id="toc-container">
         <ul class="toc-list" id="table-of-contents"></ul>
     </div>
@@ -118,7 +123,7 @@
             '740円': "740円",
             '800円': "800円",
         };
-        
+
         const menuData = [
             { category: "成田屋名物", items: [
                 { name: "★鳥酢", price: prices['280円'], image: "とりす.jpg" },
@@ -310,7 +315,7 @@
                 category.style.scrollMarginTop = `${tocHeight + 10}px`;
             });
         });
-
+        
         function showPhoto(element) {
             const photoSrc = element.getAttribute('data-src');
             const photoOverlay = document.getElementById('photo-overlay');
@@ -319,7 +324,6 @@
             const tocHeight = tocContainer.offsetHeight;
 
             photoOverlay.style.top = `${tocHeight}px`;
-
             const viewportHeight = window.innerHeight;
             const overlayHeight = viewportHeight - tocHeight;
             photoOverlay.style.height = `${overlayHeight}px`;
