@@ -58,6 +58,16 @@
             scroll-margin-top: 55px;
         }
 
+        /* 👈ここから変更 */
+        .yakitori-note {
+            font-size: 14px;
+            color: #d9534f; /* 目立つ赤色 */
+            margin-top: -5px;
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        /* 変更ここまで👉 */
+
         .toc-list {
             list-style: none;
             padding: 0;
@@ -285,6 +295,16 @@
                 categoryTitle.className = 'category';
                 categoryTitle.textContent = category.category;
                 menuList.appendChild(categoryTitle);
+                
+                // 👈ここから変更
+                // 「やきとり」のカテゴリにのみ注意書きを追加
+                if (category.category === "やきとり") {
+                    const yakitoriNote = document.createElement('p');
+                    yakitoriNote.className = 'yakitori-note';
+                    yakitoriNote.textContent = '※二本からになります';
+                    menuList.appendChild(yakitoriNote);
+                }
+                // 変更ここまで👉
 
                 const tocItem = document.createElement('li');
                 tocItem.innerHTML = `<a href="#${categoryId}">${category.category}</a>`;
