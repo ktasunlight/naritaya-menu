@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>成田家 - メニュー</title>
+    <title>成田屋 - メニュー</title>
     <style>
         body { font-family: sans-serif; margin: 20px; }
         h1 {
@@ -58,15 +58,13 @@
             scroll-margin-top: 55px;
         }
 
-        /* 👈ここから変更 */
         .yakitori-note {
-            font-size: 14px;
-            color: #d9534f; /* 目立つ赤色 */
+            font-size: 17px;
+            color: #d9534f;
             margin-top: -5px;
             margin-bottom: 15px;
             text-align: left;
         }
-        /* 変更ここまで👉 */
 
         .toc-list {
             list-style: none;
@@ -97,20 +95,80 @@
             width: 100vw;
             margin-left: -20px;
         }
+
+        /* 英語切り替えボタンのスタイル */
+        .language-toggle {
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 20;
+            display: flex;
+            gap: 5px;
+        }
+
+        .language-toggle button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 5px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .language-toggle button.active {
+            opacity: 1.0;
+            background-color: #45a049;
+        }
+
+        .language-toggle button:hover {
+            opacity: 1.0;
+        }
+
+        /* 言語ごとのメニュー表示/非表示 */
+        .menu-content {
+            display: none;
+        }
+
+        .menu-content.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
 
-    <h1>
-        成田家 メニュー表
-        <span class="tax-note">※税込価格</span>
-    </h1>
-    <p class="instruction">メニューの文字をタッチすると画像が表示されます</p>
-
-    <div class="toc-container" id="toc-container">
-        <ul class="toc-list" id="table-of-contents"></ul>
+    <div class="language-toggle">
+        <button id="lang-ja" class="active">日本語</button>
+        <button id="lang-en">English</button>
     </div>
-    <div id="menu-list"></div>
+
+    <div id="menu-ja" class="menu-content active">
+        <h1>
+            成田屋 メニュー表
+            <span class="tax-note">※税込価格</span>
+        </h1>
+        <p class="instruction">メニューの文字をタッチすると画像が表示されます</p>
+
+        <div class="toc-container" id="toc-container-ja">
+            <ul class="toc-list" id="table-of-contents-ja"></ul>
+        </div>
+        <div id="menu-list-ja"></div>
+    </div>
+
+    <div id="menu-en" class="menu-content">
+        <h1>
+            Naritaya Menu
+            <span class="tax-note">※Tax Included</span>
+        </h1>
+        <p class="instruction">Tap on the menu item to view the photo.</p>
+
+        <div class="toc-container" id="toc-container-en">
+            <ul class="toc-list" id="table-of-contents-en"></ul>
+        </div>
+        <div id="menu-list-en"></div>
+    </div>
 
     <div id="photo-overlay" class="photo-container" onclick="this.classList.remove('show');">
         <img id="enlarged-photo" src="">
@@ -134,8 +192,9 @@
             '800円': "800円",
         };
 
-        const menuData = [
-            { category: "成田家名物", items: [
+        // 日本語メニューデータ
+        const menuDataJa = [
+            { category: "成田屋名物", items: [
                 { name: "★鳥酢", price: prices['280円'], image: "とりす.jpg" },
                 { name: "★湯どうふ", price: prices['340円'], image: "ゆどうふ.jpg" }
             ]},
@@ -284,22 +343,184 @@
             ]}
         ];
         
-        function generateMenu() {
-            const menuList = document.getElementById('menu-list');
-            const tocList = document.getElementById('table-of-contents');
+        // 英語メニューデータ（ここに英語の項目を入れます）
+        // 🚨 重要：ここを編集して英語のメニュー名を追加してください 🚨
+        const menuDataEn = [
+            { category: "Naritaya Specialties", items: [
+                { name: "Vinegared Chicken", price: prices['280円'], image: "とりす.jpg" },
+                { name: "Yudofu (Boiled Tofu)", price: prices['340円'], image: "ゆどうふ.jpg" }
+            ]},
+            { category: "Appetizers", items: [
+                { name: "Edamame", price: prices['280円'], image: "えだまめ.jpg" },
+                { name: "Chilled Tofu", price: prices['280円'], image: "ひややっこ.jpg" },
+                { name: "Tomato", price: prices['280円'], image: "とまと.jpg" },
+                { name: "Moro-kyu", price: prices['280円'], image: "もろきゅう.jpg" },
+                { name: "Sea Urchin & Jellyfish", price: prices['280円'], image: "うにくらげ.jpg" },
+                { name: "Natto", price: prices['280円'], image: "なっとう.jpg" },
+                { name: "Cheese", price: prices['280円'], image: "ちーず.jpg" },
+                { name: "Kimchi (Napa Cabbage)", price: prices['280円'], image: "はくさいきむち.jpg" },
+                { name: "Pickled Cabbage", price: prices['280円'], image: "はくさいづけ.jpg" },
+                { name: "Lightly Pickled Radish", price: prices['280円'], image: "だいこんあさづけ.jpg" },
+                { name: "Pickled Shallots", price: prices['280円'], image: "らっきょうづけ.jpg" },
+                { name: "Tofu Dengaku", price: prices['340円'], image: "とうふでんがく.jpg" },
+                { name: "Konjac Dengaku", price: prices['340円'], image: "こんにゃくでんがく.jpg" },
+                { name: "Tako Wasabi (Octopus with Wasabi)", price: prices['340円'], image: "たこわさ.jpg" },
+                { name: "Grated Yam", price: prices['340円'], image: "とろろ.jpg" },
+                { name: "Sliced Nagaimo", price: prices['340円'], image: "ながいもすらいす.jpg" },
+                { name: "Dried Round Sardines", price: prices['390円'], image: "めざし.jpg" },
+                { name: "Grated Yam with Natto", price: prices['440円'], image: "とろろなっとう.jpg" },
+                { name: "Potato Salad", price: prices['440円'], image: "ぽてさら.jpg" },
+                { name: "Changja (Spicy Pickled Cod Guts)", price: prices['440円'], image: "ちゃんじゃ.jpg" },
+                { name: "Steamed Asari Clams in Sake", price: prices['640円'], image: "あさりさかむし.jpg" }
+            ]},
+            { category: "Sashimi", items: [
+                { name: "Assorted Sashimi", price: prices['800円'], image: "さしもり.jpg" },
+                { name: "Tuna with Grated Yam", price: prices['690円'], image: "まぐろやまかけ.jpg" },
+                { name: "Diced Local Octopus", price: prices['690円'], image: "たこぶつ.jpg" },
+                { name: "Squid with Natto", price: prices['690円'], image: "いかなっとう.jpg" },
+                { name: "Tuna with Natto", price: prices['690円'], image: "まぐろなっとう.jpg" },
+                { name: "Yellowtail Sashimi", price: prices['690円'], image: "はまちさし.jpg" },
+                { name: "Squid Sashimi", price: prices['690円'], image: "いかさし.jpg" },
+                { name: "Horse Mackerel Sashimi", price: prices['690円'], image: "あじさし.jpg" },
+                { name: "Chopped Horse Mackerel", price: prices['690円'], image: "あじたたき.jpg" },
+                { name: "Seared Bonito", price: prices['690円'], image: "かつおたたき.jpg" }
+            ]},
+            { category: "Yakitori", items: [
+                { name: "Chicken Thigh Skewer (1pc)", price: prices['200円'], image: "みくし.jpg" },
+                { name: "Chicken Skin Skewer (1pc)", price: prices['200円'], image: "かわくし.jpg" },
+                { name: "Chicken Gizzard Skewer (1pc)", price: prices['200円'], image: "ずりくし.jpg" },
+                { name: "Chicken Wing Skewer (1pc)", price: prices['220円'], image: "てばさき.jpg" },
+                { name: "Beef Meatball Skewer (1pc)", price: prices['220円'], image: "つくね.jpg" }
+            ]},
+            { category: "Simmered Dishes", items: [
+                { name: "Simmered Chicken Liver", price: prices['280円'], image: "とりきも.jpg" },
+                { name: "Simmered Fish Bones", price: prices['280円'], image: "あらだき.jpg" },
+                { name: "Simmered Taro", price: prices['340円'], image: "さといもに.jpg" },
+                { name: "Simmered Eggplant with Miso", price: prices['440円'], image: "なすみそ.jpg" },
+                { name: "Nikujaga", price: prices['440円'], image: "にくじゃが.jpg" },
+                { name: "Steamed Asari Clams in Sake", price: prices['640円'], image: "あさりさかむし.jpg" }
+            ]},
+            { category: "Grilled Dishes", items: [
+                { name: "Grilled Shishamo", price: prices['490円'], image: "ししゃもやき.jpg" },
+                { name: "Grilled Saury", price: prices['640円'], image: "さんまやき.jpg" },
+                { name: "Grilled Atka Mackerel", price: prices['690円'], image: "ほっけやき.jpg" },
+                { name: "Grilled Squid Tentacles", price: prices['390円'], image: "いかげそやき.jpg" },
+                { name: "Grilled Eggplant", price: prices['440円'], image: "やきなす.jpg" },
+                { name: "Grilled Chicken Neck", price: prices['440円'], image: "せせりやき.jpg" },
+                { name: "Grilled Beef Skirt Steak", price: prices['740円'], image: "ぎゅうはらみやき.jpg" },
+                { name: "Grilled Beef Tongue", price: prices['740円'], image: "たん.jpg" },
+                { name: "Dashimaki Tamago", price: prices['440円'], image: "だしまきたまご.jpg" },
+                { name: "Okonomiyaki-style Green Onion Pancake", price: prices['540円'], image: "ねぎやき.jpg" }
+            ]},
+            { category: "Vinegared Dishes", items: [
+                { name: "Vinegared Mozuku Seaweed", price: prices['280円'], image: "もずくす.jpg" },
+                { name: "Vinegared Bean Sprouts with Sesame", price: prices['280円'], image: "もやしごます.jpg" },
+                { name: "Chirimen with Radish", price: prices['280円'], image: "ちりめんだいこん.jpg" },
+                { name: "Vinegared Octopus", price: prices['440円'], image: "たこす.jpg" },
+                { name: "Vinegared Mackerel", price: prices['440円'], image: "さばす.jpg" },
+                { name: "Mozuku with Grated Yam", price: prices['440円'], image: "もずくとろろ.jpg" }
+            ]},
+            { category: "Fried Dishes", items: [
+                { name: "Assorted Tempura", price: prices['800円'], image: "てんもり.jpg" },
+                { name: "Shrimp Tempura", price: prices['690円'], image: "えびてん.jpg" },
+                { name: "Conger Eel Tempura", price: prices['690円'], image: "あなごてん.jpg" },
+                { name: "Sardine Tempura", price: prices['690円'], image: "いわしてん.jpg" },
+                { name: "Octopus Tempura", price: prices['690円'], image: "たこてん.jpg" },
+                { name: "Squid Tempura", price: prices['690円'], image: "いかてん.jpg" },
+                { name: "Kisu Tempura", price: prices['690円'], image: "きすてん.jpg" },
+                { name: "Squid Tentacle Tempura", price: prices['690円'], image: "げそてん.jpg" },
+                { name: "Icefish Tempura", price: prices['690円'], image: "しらうおてん.jpg" },
+                { name: "Horse Mackerel Fry", price: prices['690円'], image: "あじふらい.jpg" },
+                { name: "Shrimp Mayo Tempura", price: prices['690円'], image: "えびまよてん.jpg" },
+                { name: "Dried Squid Fry", price: prices['440円'], image: "さきいかてん.jpg" },
+                { name: "Lotus Root Tempura", price: prices['440円'], image: "れんこんてん.jpg" },
+                { name: "Burdock Root Tempura", price: prices['440円'], image: "こぼうてん.jpg" },
+                { name: "Chikuwa Tempura", price: prices['440円'], image: "ちくわてん.jpg" },
+                { name: "Eggplant Tempura", price: prices['440円'], image: "なすびてん.jpg" },
+                { name: "Onion Tempura", price: prices['440円'], image: "たまねぎてん.jpg" },
+                { name: "Maitake Mushroom Tempura", price: prices['440円'], image: "まいたけてん.jpg" },
+                { name: "Cheese Tempura", price: prices['440円'], image: "ちーずてん.jpg" },
+                { name: "Gyoza Tempura", price: prices['440円'], image: "ぎょーざてん.jpg" },
+                { name: "Shumai Tempura", price: prices['440円'], image: "しゅうまいてん.jpg" },
+                { name: "Garlic Tempura", price: prices['440円'], image: "にんにくてん.jpg" },
+                { name: "Cheese Ham Cutlet", price: prices['440円'], image: "ちーずはむかつ.jpg" },
+                { name: "Sausage & Fries", price: prices['540円'], image: "ういんなー.jpg" },
+                { name: "Pork Skewers (2pcs)", price: prices['690円'], image: "くしかつ.jpg" },
+                { name: "Fried Baby Octopus", price: prices['690円'], image: "こだこから.jpg" },
+                { name: "Fried Chicken", price: prices['690円'], image: "とりから.jpg" },
+                { name: "Fried Chicken Wings (2pcs)", price: prices['440円'], image: "てばから.jpg" },
+                { name: "Crispy Fried Chicken Skin", price: prices['440円'], image: "かわぱり.jpg" },
+                { name: "Fried Small Shrimp", price: prices['440円'], image: "こえびから.jpg" },
+                { name: "Fried Cartilage", price: prices['440円'], image: "なんこつから.jpg" },
+                { name: "Fried Chicken Neck", price: prices['440円'], image: "せせりから.jpg" },
+                { name: "Fried Chicken Gizzard", price: prices['440円'], image: "すなずりから.jpg" },
+                { name: "Chicken Breast Cutlet", price: prices['440円'], image: "ささみふらい.jpg" },
+                { name: "French Fries", price: prices['390円'], image: "ぽてふら.jpg" },
+                { name: "Agedashi Tofu", price: prices['390円'], image: "あげだしどうふ.jpg" },
+                { name: "Agedashi Mochi", price: prices['390円'], image: "あげだしもち.jpg" },
+                { name: "Agedashi Takoyaki", price: prices['390円'], image: "だしたこ.jpg" },
+                { name: "Beef Croquette", price: prices['280円'], image: "ぎゅうころ.jpg" }
+            ]},
+            { category: "Stir-fried Dishes", items: [
+                { name: "Stir-fried Offal", price: prices['740円'], image: "ほるもんいため.jpg" },
+                { name: "Stir-fried Asparagus", price: prices['440円'], image: "あすぱらいため.jpg" },
+                { name: "Stir-fried Garlic Sprouts", price: prices['440円'], image: "めいため.jpg" },
+                { name: "Stir-fried Egg & Chinese Chives", price: prices['440円'], image: "にらたま.jpg" },
+                { name: "Stir-fried Egg & Spinach", price: prices['440円'], image: "ほうれんそうたまごいため.jpg" },
+                { name: "Stir-fried Egg & Snow Peas", price: prices['440円'], image: "えんどうたまごいため.jpg" }
+            ]},
+            { category: "Sushi Rolls", items: [
+                { name: "Tekka Maki (Tuna)", price: prices['390円'], image: "てっかまき.jpg" },
+                { name: "Kappa Maki (Cucumber)", price: prices['390円'], image: "かっぱまき.jpg" },
+                { name: "Shinko Maki (Pickled Radish)", price: prices['390円'], image: "しんこまき.jpg" },
+                { name: "Shiso Maki (Perilla Leaf)", price: prices['390円'], image: "しそまき.jpg" },
+                { name: "Chicken Mayo Roll", price: prices['390円'], image: "とりまよまき.jpg" },
+                { name: "Shrimp Roll", price: prices['440円'], image: "えびまき.jpg" },
+                { name: "Yellowtail Roll", price: prices['440円'], image: "はまちまき.jpg" },
+                { name: "Squid Roll", price: prices['440円'], image: "いかまき.jpg" },
+                { name: "Conger Eel Roll", price: prices['440円'], image: "あなごまき.jpg" },
+                { name: "Mentai Roll (Spicy Cod Roe)", price: prices['440円'], image: "めんたいこまき.jpg" },
+            ]},
+            { category: "Rice Dishes", items: [
+                { name: "Onigiri (Rice Ball)", price: prices['230円'], image: "おにぎり.jpg" },
+                { name: "Grilled Onigiri", price: prices['230円'], image: "やきおにぎり.jpg" },
+                { name: "Rice", price: prices['280円'], image: "ごはん.jpg" },
+                { name: "Norichazuke (Rice with Seaweed)", price: prices['440円'], image: "のりちゃづけ.jpg" },
+                { name: "Umechazuke (Rice with Pickled Plum)", price: prices['440円'], image: "うめちゃづけ.jpg" },
+                { name: "Sakechazuke (Rice with Salmon)", price: prices['540円'], image: "さけちゃづけ.jpg" },
+            ]},
+            { category: "Soups", items: [
+                { name: "Miso Soup", price: prices['280円'], image: "みそしる.jpg" },
+                { name: "Shijimi Clam Miso Soup", price: prices['390円'], image: "しじみじる.jpg" },
+            ]}
+        ];
+
+        function generateMenu(lang, menuData) {
+            const menuList = document.getElementById(`menu-list-${lang}`);
+            const tocList = document.getElementById(`table-of-contents-${lang}`);
+            
+            // 既存のコンテンツをクリア
+            menuList.innerHTML = '';
+            tocList.innerHTML = '';
 
             menuData.forEach((category, index) => {
                 const categoryTitle = document.createElement('h2');
-                const categoryId = `category-${index}`;
+                const categoryId = `category-${lang}-${index}`;
                 categoryTitle.id = categoryId;
                 categoryTitle.className = 'category';
                 categoryTitle.textContent = category.category;
                 menuList.appendChild(categoryTitle);
-                
-                if (category.category === "やきとり") {
+
+                // 「やきとり」カテゴリにのみ注意書きを追加
+                if (lang === 'ja' && category.category === "やきとり") {
                     const yakitoriNote = document.createElement('p');
                     yakitoriNote.className = 'yakitori-note';
                     yakitoriNote.textContent = '※二本からになります';
+                    menuList.appendChild(yakitoriNote);
+                } else if (lang === 'en' && category.category === "Yakitori") {
+                    const yakitoriNote = document.createElement('p');
+                    yakitoriNote.className = 'yakitori-note';
+                    yakitoriNote.textContent = '※Minimum order of 2 skewers.';
                     menuList.appendChild(yakitoriNote);
                 }
 
@@ -311,7 +532,7 @@
                     const menuItem = document.createElement('div');
                     menuItem.className = 'menu-item';
                     menuItem.innerHTML = `
-                        <a href="#" onclick="showPhoto(this); return false;" data-src="${item.image}">
+                        <a href="#" onclick="showPhoto(this, '${lang}'); return false;" data-src="${item.image}">
                             <div class="menu-title-and-price">
                                 <h2>${item.name}</h2>
                                 <p>${item.price}</p>
@@ -323,21 +544,42 @@
             });
         }
         
-        document.addEventListener('DOMContentLoaded', () => {
-            generateMenu();
-            const tocContainer = document.getElementById('toc-container');
-            const tocHeight = tocContainer.offsetHeight;
-            const categories = document.querySelectorAll('.category');
-            categories.forEach(category => {
-                category.style.scrollMarginTop = `${tocHeight + 10}px`;
+        function switchLanguage(lang) {
+            const allMenuContents = document.querySelectorAll('.menu-content');
+            allMenuContents.forEach(content => {
+                content.classList.remove('active');
             });
-        });
+            document.getElementById(`menu-${lang}`).classList.add('active');
+
+            const allButtons = document.querySelectorAll('.language-toggle button');
+            allButtons.forEach(button => {
+                button.classList.remove('active');
+            });
+            document.getElementById(`lang-${lang}`).classList.add('active');
+
+            // TOCのスクロール位置をリセット
+            const tocContainer = document.getElementById(`toc-container-${lang}`);
+            if (tocContainer) {
+                tocContainer.scrollLeft = 0;
+            }
+        }
         
+        document.addEventListener('DOMContentLoaded', () => {
+            // ページ読み込み時に両方のメニューを生成
+            generateMenu('ja', menuDataJa);
+            generateMenu('en', menuDataEn);
+
+            // ボタンにイベントリスナーを追加
+            document.getElementById('lang-ja').addEventListener('click', () => switchLanguage('ja'));
+            document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
+        });
+
         function showPhoto(element) {
             const photoSrc = element.getAttribute('data-src');
             const photoOverlay = document.getElementById('photo-overlay');
             const enlargedPhoto = document.getElementById('enlarged-photo');
-            const tocContainer = document.getElementById('toc-container');
+            const currentLang = document.querySelector('.menu-content.active').id.replace('menu-', '');
+            const tocContainer = document.getElementById(`toc-container-${currentLang}`);
             const tocHeight = tocContainer.offsetHeight;
 
             photoOverlay.style.top = `${tocHeight}px`;
