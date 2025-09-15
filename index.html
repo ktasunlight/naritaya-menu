@@ -20,7 +20,13 @@
         .instruction {
             font-size: 14px;
             color: #999;
-            margin-bottom: 20px;
+            margin-bottom: 5px; /* ここを調整 */
+        }
+        .order-note {
+            font-size: 16px;
+            color: #d9534f;
+            font-weight: bold;
+            margin-bottom: 20px; /* 新しい行を追加 */
         }
         .menu-item { border-bottom: 1px solid #ccc; padding: 15px 0; }
         .menu-item h2 { font-size: 20px; margin: 0; }
@@ -149,6 +155,7 @@
             成田屋 メニュー表
             <span class="tax-note">※税込価格</span>
         </h1>
+        <p class="order-note">※こちらから注文はできません</p>
         <p class="instruction">メニューの文字をタッチすると画像が表示されます</p>
 
         <div class="toc-container" id="toc-container-ja">
@@ -162,6 +169,7 @@
             Naritaya Menu
             <span class="tax-note">※Tax Included</span>
         </h1>
+        <p class="order-note">※You cannot place orders here.</p>
         <p class="instruction">Tap on the menu item to view the photo.</p>
 
         <div class="toc-container" id="toc-container-en">
@@ -319,7 +327,7 @@
                 { name: "小エビ唐揚", price: pricesJa['440円'], image: "こえびから.jpg" },
                 { name: "軟骨唐揚", price: pricesJa['440円'], image: "なんこつから.jpg" },
                 { name: "せせり唐揚", price: pricesJa['440円'], image: "せせりから.jpg" },
-                { name: "砂ずり唐揚", price: pricesJa['440円'], image: "すなずりから.jpg" },
+                { name: "砂ずり唐揚", price: pricesJa['440円'], image: "ずりから.jpg" },
                 { name: "ササミフライ", price: pricesJa['440円'], image: "ささみふらい.jpg" },
                 { name: "ポテトフライ", price: pricesJa['390円'], image: "ぽてふら.jpg" },
                 { name: "揚だし豆腐", price: pricesJa['390円'], image: "あげだしどうふ.jpg" },
@@ -470,7 +478,7 @@
                 { name: "Fried Small Shrimp", price: pricesEn['440円'], image: "こえびから.jpg" },
                 { name: "Fried Cartilage", price: pricesEn['440円'], image: "なんこつから.jpg" },
                 { name: "Fried Chicken Neck", price: pricesEn['440円'], image: "せせりから.jpg" },
-                { name: "Fried Chicken Gizzard", price: pricesEn['440円'], image: "すなずりから.jpg" },
+                { name: "Fried Chicken Gizzard", price: pricesEn['440円'], image: "ずりから.jpg" },
                 { name: "Chicken Breast Cutlet", price: pricesEn['440円'], image: "ささみふらい.jpg" },
                 { name: "French Fries", price: pricesEn['390円'], image: "ぽてふら.jpg" },
                 { name: "Agedashi Tofu", price: pricesEn['390円'], image: "あげだしどうふ.jpg" },
@@ -609,4 +617,4 @@
         }
     </script>
 </body>
-</html>」
+</html>
