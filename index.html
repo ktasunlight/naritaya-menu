@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>成田家 - メニュー</title>
+    <title>成田家 - メニュースマート表示</title>
     <style>
         body {
             font-family: sans-serif;
             margin: 20px;
+            padding: 0;
             overflow-x: hidden; 
         }
         h1 {
@@ -68,7 +69,6 @@
             margin-top: 30px;
             border-bottom: 2px solid #333;
             padding-bottom: 5px;
-            scroll-margin-top: 131px;
         }
 
         .yakitori-note {
@@ -115,7 +115,6 @@
         }
         
         .spacer {
-            height: 220px; 
             display: block;
         }
 
@@ -156,7 +155,7 @@
 </head>
 <body>
 
-    <div class="header">
+    <div class="header" id="main-header">
         <div class="header-content-wrapper">
             <div class="language-toggle">
                 <button id="lang-ja" class="active">日本語</button>
@@ -189,7 +188,7 @@
         </div>
     </div>
     
-    <div class="spacer"></div>
+    <div class="spacer" id="content-spacer"></div>
     <div id="menu-list-ja" class="menu-content active"></div>
     <div id="menu-list-en" class="menu-content"></div>
 
@@ -247,17 +246,18 @@
                 { name: "イカ納豆", price: pricesJa['690円'], image: "イカ納豆.jpg" },
                 { name: "マグロ納豆", price: pricesJa['690円'], image: "マグロ納豆.jpg" },
                 { name: "ハマチ刺し", price: pricesJa['690円'], image: "ハマチ刺し.jpg" },
+                { name: "マグロ刺し", price: pricesJa['690円'], image: "マグロ刺し.jpg" },
                 { name: "イカ刺し", price: pricesJa['690円'], image: "イカ刺し.jpg" },
                 { name: "アジ刺し", price: pricesJa['690円'], image: "アジ刺し.jpg" },
                 { name: "アジタタキ", price: pricesJa['690円'], image: "アジタタキ.jpg" },
                 { name: "カツオタタキ", price: pricesJa['690円'], image: "カツオタタキ.jpg" }
             ]},
             { category: "やきとり", items: [
-                { name: "とり身", price: pricesJa['200円'], image: "とり身.jpg" },
-                { name: "とり皮", price: pricesJa['200円'], image: "とり皮.jpg" },
-                { name: "砂ずり", price: pricesJa['200円'], image: "砂ずり.jpg" },
-                { name: "手羽先", price: pricesJa['220円'], image: "手羽先.jpg" },
-                { name: "牛つくね", price: pricesJa['220円'], image: "牛つくね.jpg" }
+                { name: "とり身（1本）", price: pricesJa['200円'], image: "とり身.jpg" },
+                { name: "とり皮（1本）", price: pricesJa['200円'], image: "とり皮.jpg" },
+                { name: "砂ずり（1本）", price: pricesJa['200円'], image: "砂ずり.jpg" },
+                { name: "手羽先（1本）", price: pricesJa['220円'], image: "手羽先.jpg" },
+                { name: "牛つくね（1本）", price: pricesJa['220円'], image: "牛つくね.jpg" }
             ]},
             { category: "煮物", items: [
                 { name: "鳥きも煮", price: pricesJa['280円'], image: "鳥きも煮.jpg" },
@@ -280,7 +280,7 @@
             ]},
             { category: "酢の物", items: [
                 { name: "もずく酢", price: pricesJa['280円'], image: "もずく酢.jpg" },
-                { name: "もやしゴマ酢", price: pricesJa['280円'], image: "もやしゴマ酢.jpg" },
+                { name: "もやしゴマ酢", price: pricesJa['280円'], image: "もずく酢.jpg" },
                 { name: "ちりめん大根", price: pricesJa['280円'], image: "ちりめん大根.jpg" },
                 { name: "タコ酢", price: pricesJa['440円'], image: "タコ酢.jpg" },
                 { name: "サバ酢", price: pricesJa['440円'], image: "サバ酢.jpg" },
@@ -311,10 +311,10 @@
                 { name: "にんにく天", price: pricesJa['440円'], image: "にんにく天.jpg" },
                 { name: "チーズハムカツ", price: pricesJa['440円'], image: "チーズハムカツ.jpg" },
                 { name: "粗挽ウインナー＆ポテト", price: pricesJa['540円'], image: "粗挽ウインナー＆ポテト.jpg" },
-                { name: "豚串カツ", price: pricesJa['690円'], image: "豚串カツ.jpg" },
+                { name: "豚串カツ（2本）", price: pricesJa['690円'], image: "豚串カツ.jpg" },
                 { name: "子ダコ唐揚", price: pricesJa['690円'], image: "子ダコ唐揚.jpg" },
                 { name: "とり唐揚", price: pricesJa['690円'], image: "とり唐揚.jpg" },
-                { name: "手羽先唐揚", price: pricesJa['440円'], image: "手羽先唐揚.jpg" },
+                { name: "手羽先唐揚（2本）", price: pricesJa['440円'], image: "手羽先唐揚.jpg" },
                 { name: "鳥皮パリパリ揚", price: pricesJa['440円'], image: "鳥皮パリパリ揚.jpg" },
                 { name: "小エビ唐揚", price: pricesJa['440円'], image: "小エビ唐揚.jpg" },
                 { name: "軟骨唐揚", price: pricesJa['440円'], image: "軟骨唐揚.jpg" },
@@ -345,7 +345,7 @@
                 { name: "はまち巻", price: pricesJa['440円'], image: "はまち巻.jpg" },
                 { name: "いか巻", price: pricesJa['440円'], image: "いか巻.jpg" },
                 { name: "あなご巻", price: pricesJa['440円'], image: "あなご巻.jpg" },
-                { name: "明太子巻", price: pricesJa['440円'], image: "明太子巻.jpg" },
+                { name: "明太子巻", price: pricesJa['440円'], image: "明太子巻.jpg" }
             ]},
             { category: "ご飯物", items: [
                 { name: "おにぎり", price: pricesJa['230円'], image: "おにぎり.jpg" },
@@ -353,14 +353,14 @@
                 { name: "ごはん", price: pricesJa['280円'], image: "ごはん.jpg" },
                 { name: "のり茶漬", price: pricesJa['440円'], image: "のり茶漬.jpg" },
                 { name: "うめ茶漬", price: pricesJa['440円'], image: "うめ茶漬.jpg" },
-                { name: "鮭茶漬", price: pricesJa['540円'], image: "鮭茶漬.jpg" },
+                { name: "鮭茶漬", price: pricesJa['540円'], image: "鮭茶漬.jpg" }
             ]},
             { category: "汁物", items: [
                 { name: "みそ汁", price: pricesJa['280円'], image: "みそ汁.jpg" },
-                { name: "シジミ汁", price: pricesJa['390円'], image: "シジミ汁.jpg" },
+                { name: "シジミ汁", price: pricesJa['390円'], image: "シジミ汁.jpg" }
             ]}
         ];
-        
+
         const menuDataEn = [
             { category: "Naritaya Specialties", items: [
                 { name: "★Vinegared Chicken", price: pricesEn['280円'], image: "鳥酢.jpg" },
@@ -396,17 +396,18 @@
                 { name: "Squid with Natto", price: pricesEn['690円'], image: "イカ納豆.jpg" },
                 { name: "Tuna with Natto", price: pricesEn['690円'], image: "マグロ納豆.jpg" },
                 { name: "Yellowtail Sashimi", price: pricesEn['690円'], image: "ハマチ刺し.jpg" },
+                { name: "Tuna Sashimi", price: pricesEn['690円'], image: "マグロ刺し.jpg" },
                 { name: "Squid Sashimi", price: pricesEn['690円'], image: "イカ刺し.jpg" },
                 { name: "Horse Mackerel Sashimi", price: pricesEn['690円'], image: "アジ刺し.jpg" },
                 { name: "Horse Mackerel Tataki", price: pricesEn['690円'], image: "アジタタキ.jpg" },
                 { name: "Bonito Tataki", price: pricesEn['690円'], image: "カツオタタキ.jpg" }
             ]},
             { category: "Yakitori", items: [
-                { name: "Chicken Thigh", price: pricesEn['200円'], image: "とり身.jpg" },
-                { name: "Chicken Skin", price: pricesEn['200円'], image: "とり皮.jpg" },
-                { name: "Gizzard", price: pricesEn['200円'], image: "砂ずり.jpg" },
-                { name: "Chicken Wings", price: pricesEn['220円'], image: "手羽先.jpg" },
-                { name: "Beef Tsukune (Meatball)", price: pricesEn['220円'], image: "牛つくね.jpg" }
+                { name: "Chicken Thigh (1 pc)", price: pricesEn['200円'], image: "とり身.jpg" },
+                { name: "Chicken Skin (1 pc)", price: pricesEn['200円'], image: "とり皮.jpg" },
+                { name: "Gizzard (1 pc)", price: pricesEn['200円'], image: "砂ずり.jpg" },
+                { name: "Chicken Wings (1 pc)", price: pricesEn['220円'], image: "手羽先.jpg" },
+                { name: "Beef Tsukune (1 pc)", price: pricesEn['220円'], image: "牛つくね.jpg" }
             ]},
             { category: "Simmered Dishes", items: [
                 { name: "Simmered Chicken Liver", price: pricesEn['280円'], image: "鳥きも煮.jpg" },
@@ -454,16 +455,16 @@
                 { name: "Eggplant Tempura", price: pricesEn['440円'], image: "なすび天.jpg" },
                 { name: "Onion Tempura", price: pricesEn['440円'], image: "玉ねぎ天.jpg" },
                 { name: "Maitake Tempura", price: pricesEn['440円'], image: "舞茸天.jpg" },
-                { name: "Cheese Tempura", price: pricesEn['440円'], image: "チーズ天.jpg" },
+                { name: "Cheese Tempura", price: pricesEn['440円'], image: "cheese.jpg" },
                 { name: "Gyoza Tempura", price: pricesEn['440円'], image: "ギョーザ天.jpg" },
                 { name: "Shumai Tempura", price: pricesEn['440円'], image: "シュウマイ天.jpg" },
                 { name: "Garlic Tempura", price: pricesEn['440円'], image: "にんにく天.jpg" },
                 { name: "Cheese Ham Cutlet", price: pricesEn['440円'], image: "チーズハムカツ.jpg" },
                 { name: "Wiener & Potato", price: pricesEn['540円'], image: "粗挽ウインナー＆ポテト.jpg" },
-                { name: "Pork Kushikatsu", price: pricesEn['690円'], image: "豚串カツ.jpg" },
+                { name: "Pork Kushikatsu (2 pcs)", price: pricesEn['690円'], image: "豚串カツ.jpg" },
                 { name: "Deep Fried Baby Octopus", price: pricesEn['690円'], image: "子ダコ唐揚.jpg" },
                 { name: "Fried Chicken", price: pricesEn['690円'], image: "とり唐揚.jpg" },
-                { name: "Fried Chicken Wings", price: pricesEn['440円'], image: "手羽先唐揚.jpg" },
+                { name: "Fried Chicken Wings (2 pcs)", price: pricesEn['440円'], image: "手羽先唐揚.jpg" },
                 { name: "Crispy Chicken Skin", price: pricesEn['440円'], image: "鳥皮パリパリ揚.jpg" },
                 { name: "Fried Small Shrimp", price: pricesEn['440円'], image: "小エビ唐揚.jpg" },
                 { name: "Fried Cartilage", price: pricesEn['440円'], image: "軟骨唐揚.jpg" },
@@ -494,7 +495,7 @@
                 { name: "Yellowtail Roll", price: pricesEn['440円'], image: "はまち巻.jpg" },
                 { name: "Squid Roll", price: pricesEn['440円'], image: "いか巻.jpg" },
                 { name: "Conger Eel Roll", price: pricesEn['440円'], image: "あなご巻.jpg" },
-                { name: "Pollock Roe Roll", price: pricesEn['440円'], image: "明太子巻.jpg" },
+                { name: "Pollock Roe Roll", price: pricesEn['440円'], image: "明太子巻.jpg" }
             ]},
             { category: "Rice Dishes", items: [
                 { name: "Onigiri (Rice Ball)", price: pricesEn['230円'], image: "おにぎり.jpg" },
@@ -502,11 +503,11 @@
                 { name: "Rice", price: pricesEn['280円'], image: "ごはん.jpg" },
                 { name: "Nori Chazuke", price: pricesEn['440円'], image: "のり茶漬.jpg" },
                 { name: "Ume Chazuke", price: pricesEn['440円'], image: "うめ茶漬.jpg" },
-                { name: "Salmon Chazuke", price: pricesEn['540円'], image: "鮭茶漬.jpg" },
+                { name: "Salmon Chazuke", price: pricesEn['540円'], image: "鮭茶漬.jpg" }
             ]},
             { category: "Soups", items: [
                 { name: "Miso Soup", price: pricesEn['280円'], image: "みそ汁.jpg" },
-                { name: "Clam Soup (Shijimi)", price: pricesEn['390円'], image: "シジミ汁.jpg" },
+                { name: "Clam Soup (Shijimi)", price: pricesEn['390円'], image: "シジミ汁.jpg" }
             ]}
         ];
 
@@ -528,17 +529,26 @@
                 if (lang === 'ja' && category.category === "やきとり") {
                     const yakitoriNote = document.createElement('p');
                     yakitoriNote.className = 'yakitori-note';
-                    yakitoriNote.textContent = '※二本からになります';
+                    yakitoriNote.textContent = '※それぞれ二本からになります';
                     menuList.appendChild(yakitoriNote);
                 } else if (lang === 'en' && category.category === "Yakitori") {
                     const yakitoriNote = document.createElement('p');
                     yakitoriNote.className = 'yakitori-note';
-                    yakitoriNote.textContent = '※Minimum order of 2 skewers.';
+                    yakitoriNote.textContent = '※Minimum order of 2 skewers per item.';
                     menuList.appendChild(yakitoriNote);
                 }
 
                 const tocItem = document.createElement('li');
-                tocItem.innerHTML = `<a href="#${categoryId}">${category.category}</a>`;
+                const tocLink = document.createElement('a');
+                tocLink.href = `#${categoryId}`;
+                tocLink.textContent = category.category;
+                
+                tocLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    scrollToSection(categoryId);
+                });
+
+                tocItem.appendChild(tocLink);
                 tocList.appendChild(tocItem);
                 
                 category.items.forEach(item => {
@@ -556,7 +566,28 @@
                 });
             });
         }
+
+        function scrollToSection(targetId) {
+            const targetElement = document.getElementById(targetId);
+            const header = document.getElementById('main-header');
+            const headerHeight = header.offsetHeight;
+            const extraMargin = 15; 
+
+            const elementPosition = targetElement.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerHeight - extraMargin;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+        }
         
+        function adjustSpacer() {
+            const header = document.getElementById('main-header');
+            const spacer = document.getElementById('content-spacer');
+            spacer.style.height = header.offsetHeight + 'px';
+        }
+
         function switchLanguage(lang) {
             const allMenuContents = document.querySelectorAll('.menu-content');
             allMenuContents.forEach(content => content.classList.remove('active'));
@@ -573,13 +604,16 @@
                 tocContainer.scrollLeft = 0;
             }
         }
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             generateMenu('ja', menuDataJa);
             generateMenu('en', menuDataEn);
 
-            document.getElementById('lang-ja').addEventListener('click', () => switchLanguage('ja'));
-            document.getElementById('lang-en').addEventListener('click', () => switchLanguage('en'));
+            window.addEventListener('resize', adjustSpacer);
+            adjustSpacer();
+
+            document.getElementById('lang-ja').addEventListener('click', () => { switchLanguage('ja'); adjustSpacer(); });
+            document.getElementById('lang-en').addEventListener('click', () => { switchLanguage('en'); adjustSpacer(); });
         });
 
         function showPhoto(element) {
@@ -587,14 +621,10 @@
             const photoOverlay = document.getElementById('photo-overlay');
             const enlargedPhoto = document.getElementById('enlarged-photo');
             
-            const header = document.querySelector('.header');
-            const headerHeight = header.offsetHeight;
+            const headerHeight = document.getElementById('main-header').offsetHeight;
 
             photoOverlay.style.top = `${headerHeight}px`;
-            
-            const viewportHeight = window.innerHeight;
-            const availableHeight = viewportHeight - headerHeight;
-            photoOverlay.style.height = `${availableHeight}px`;
+            photoOverlay.style.height = `${window.innerHeight - headerHeight}px`;
 
             enlargedPhoto.src = photoSrc;
             photoOverlay.classList.add('show');
